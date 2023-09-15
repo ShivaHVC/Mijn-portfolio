@@ -1,0 +1,46 @@
+
+<html>
+
+<body>
+  
+  <h1>Wil je twee getallen optellen of aftrekken?</h1>
+
+  <button id="addBtn">Optellen</button>
+  <button id="subtractBtn">Aftrekken</button>
+  <p id="result">Antwoord: </p>
+
+
+
+	
+ <title>Calculator_MVP</title>
+    
+    		<script>
+  var addBtn = document.getElementById("addBtn");
+  var subtractBtn = document.getElementById("subtractBtn");
+  var resultP = document.getElementById("result");
+  
+
+
+
+
+addBtn.addEventListener("click", function() {
+  var num1 = parseInt(prompt("Voer eerste getal in"));
+  var num2 = parseInt(prompt("Voer tweede getal in"));
+  var sum = num1 + num2;
+  resultP.textContent ="Antwoord: " + sum;
+
+});
+
+subtractBtn.addEventListener("click", function() {
+  var num1 = parseInt(prompt("Voer eerste getal in"));
+  var num2 = parseInt(prompt("Voer tweede getal in"));
+  var difference = num1 - num2;
+  resultP.textContent ="Antwoord: " + difference;
+
+});
+
+		</script>
+	
+        
+    	</body>
+ </html>

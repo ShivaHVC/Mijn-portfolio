@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz shiva chitoe</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <style>
+        body {
+            text-align: center;
+            background-color: rgb(142, 21, 21);
+        }
+
+        h1 {
+            color: #000000;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #000000;
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #quiz {
+            margin-bottom: 20px;
+        }
+
+        .question {
+            margin-bottom: 10px;
+        }
+
+        .answers {
+            margin-bottom: 10px;
+        }
+
+        .feedback {
+            display: none;
+        }
+
+        #score {
+            display: none;
+        }ß
+    </style>
+</head>
+<body>
+    <h1>Quiz</h1>
+    <div id="quiz"></div>
+    <div id="feedback"></div>
+    <div id="score"></div>
+    <button onclick="checkAnswer()">Volgende</button>
+
+    <script>
+        // Vragen, keuzes en juiste antwoorden
+        var vragen = [
+            {
+                vraag: "wie heeft ervoor gezorgd dat het kabinet gevallen is?",
+                keuzes: ["Mark Rutte", "Daan Heerma van Voss", "Ryan Douglas", "VVD"],
+                juistAntwoord: 2
+            },
+            {
+                vraag: "Wie is mijn favoriete rapper?",
+                keuzes: ["Juice WRLD", "ImDontai", "Yeat", "Autumn!"],
+                juistAntwoord: 3
+            },
+            {
+                vraag: "Wat is mijn favorite game?",
+                keuzes: ["Fortnite", "minecraft", "2K", "Rocket League"],
+                juistAntwoord: 0
+            },
+            {
+                vraag: "Hoe oud is mijn vriendin?",
+                keuzes: ["6", "7", "8", "9"],
+                juistAntwoord: 1
+            },
+            {
+                vraag: "Wie is er beter?",
+                keuzes: ["KANKAN", "Ken Carson", "Summrs", "Autumn!"],
+                juistAntwoord: 1
+            },
+            {
+                vraag: "Waar ben ik allergisch voor?",
+                keuzes: ["Noten", "zuivel", "honing", "vrouwen"],
+                juistAntwoord: 3
+            },
+            {
+                vraag: "wat geeft me hoofdpijn?",
+                keuzes: ["schreeuwende mensen", "Docenten", "veel huiswerk", "vrouwen"],
+                juistAntwoord: 3
+            },
+            {
+                vraag: "wat is gevaarlijker?",
+                keuzes: ["overdosis aan paracetamol", "fietsen op ijs", "zwemmen met onweer", "vrouwen"],
+                juistAntwoord: 3
+
+            },
+            {
+                vraag: "Wie is billy flowers?",
+                keuzes: ["Ik", "Shiva chitoe", "Niemand die het weet", "een npc"],
+                juistAntwoord: 2
+            },{
+                vraag: "Wat ide quote van het jaar",
+                keuzes: ["Wie ist das skinny bradda?", "De mooiste dingen in je leven zijn geen dingen", "GOD DID", "Breaking other poeple's builds doesn't give you mats"],
+                juistAntwoord: 0
+            },
+        ];
+
+        var quizElement = document.getElementById("quiz");
+        var feedbackElement = document.getElementById("feedback");
+        var scoreElement = document.getElementById("score");
+
+        var currentQuestionIndex = 0;
+        var score = 0;
+
+        // Vraag weergeven
+        function displayQuestion() {
+            var vraagDiv = document.createElement("div");
+            vraagDiv.classList.add("question");
+
+            var vraagNummer = document.createElement("span");
+            vraagNummer.innerHTML = "Vraag " + (currentQuestionIndex + 1) + ": ";
+            vraagDiv.appendChild(vraagNummer);
+
+            var vraagTekst = document.createElement("span");
+            vraagTekst.innerHTML = vragen[currentQuestionIndex].vraag;
+            vraagDiv.appendChild(vraagTekst);
+
+            var keuzesDiv = document.createElement("div");
+            keuzesDiv.classList.add("answers");
+
+            for (var i = 0; i < vragen[currentQuestionIndex].keuzes.length; i++) {
+                var keuzeLabel = document.createElement("label");
+                var keuzeInput = document.createElement("input");
+                keuzeInput.type = "radio";
+                keuzeInput.name = "antwoord";
+                keuzeInput.value = i;
+
+                keuzeLabel.appendChild(keuzeInput);
+                keuzeLabel.innerHTML += vragen[currentQuestionIndex].keuzes[i];
+
+                keuzesDiv.appendChild(keuzeLabel);
+            }
+
+            vraagDiv.appendChild(keuzesDiv);
+            quizElement.innerHTML = "";
+            quizElement.appendChild(vraagDiv);
+        }
+
+        // Antwoord controleren en feedback geven
+        function checkAnswer() {
+            var antwoordInput = document.querySelector("input[name=antwoord]:checked");
+            if (antwoordInput) {
+                var gegevenAntwoord = parseInt(antwoordInput.value);
+                var juistAntwoord = vragen[currentQuestionIndex].juistAntwoord;
+
+                if (gegevenAntwoord === juistAntwoord) {
+                    score++;
+                }
+
+                feedbackElement.innerHTML = "";
+                var vraagFeedback = document.createElement("p");
+                vraagFeedback.innerHTML = "Vraag " + (currentQuestionIndex + 1) + ": ";
+                if (gegevenAntwoord === juistAntwoord) {
+                    vraagFeedback.innerHTML += "Correct!";
+                    vraagFeedback.classList.add("correct");
+                } else {
+                    vraagFeedback.innerHTML += "Helaas, je hebt het fout. door naar de volgende vraag!";
+                    vraagFeedback.classList.add("incorrect");
+                }
+                feedbackElement.appendChild(vraagFeedback);
+                feedbackElement.style.display = "block";
+
+                currentQuestionIndex++;
+
+                if (currentQuestionIndex < vragen.length) {
+                    displayQuestion();
+                } else {
+                    endQuiz();
+                }
+            }
+        }
+
+        // Quiz afsluiten
+        function endQuiz() {
+            quizElement.style.display = "none";
+            scoreElement.style.display = "block";
+
+            scoreElement.innerHTML = "Je score is " + score + "/" + vragen.length;
+        }
+
+        // Quiz starten
+        displayQuestion();
+    </script>
+</body>
+</html>
